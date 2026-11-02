@@ -1,58 +1,65 @@
-# 新物集活动情报桥（接口验证阶段）
+# 新物集活动情报桥
 
 目标：从新物集发现江浙沪跑团展、桌游展、ONLY、特色展览及其他线下活动，排除普通商品众筹。
 
-## 首次实测（2026-10-15）
+## 已验证接口
 
-GitHub Actions 运行记录：[38677604552](https://github.com/Drvo903/xinwuji-event-bridge/actions/runs/38677604552)。Playwright 成功打开手机与 PC 项目详情页，发现 8 个 XHR/fetch 响应。样本为项目 ID `4134`：**SDT杭州坠入奇点跑团节（10.24-10.25）**。
+### 项目发现（2026-10-30）
 
-已验证的公开读取接口：
-
-- `GET https://www.xinwuji.com/api/v1.10/fundingProject/4134` — PC 端项目详情（标题、主办方等）。
-- `GET https://www.xinwuji.com/api/v1/fundingProject/goods/4134` — 票种（`activity_time`、`market_price`、`preferential_price`、库存、购买状态等）。
-- `GET https://www.xinwuji.com/api/v1/fundingProjectUpdateRecords/4134?limit=20` — 官方更新公告。
-- `GET https://api.zhuoyou.com/gateway/shop/v1/project/detail?project_id=4134` — 手机端分享项目详情（页面调用会附带缓存破坏时间戳）。
-
-## 活动发现接口（2026-10-30 实测）
-
-检查当前 PC 前端静态代码，并使用公开只读请求验证了项目列表接口：
+检查 PC 前端代码并以公开只读请求验证项目列表接口：
 
 ```http
 GET https://www.xinwuji.com/api/v1/fundingProjects?p=1&limit=12&status=0&sort=new
 APP-SYSTEM: PC
 ```
 
-响应为 `code=0`，含 `data.total`、分页项目数组及项目 `id/title/status/category_name/created_at` 等字段。该接口可发现未知项目 ID；已知 ID 再交给详情、票种及更新公告接口读取。
+响应为 `code=0`，含 `data.total`、分页项目数组及项目 `id/title/status/category_name/created_at` 等字段，可发现未知项目 ID。PC 列表页参数：
 
-PC 列表页前端使用参数：
-
-- `p`：页码（从 1 开始）；`limit`：页大小（页面默认 12）。
-- `status`：列表状态筛选。前端选项为 `0` 全部、`10` 预售中、`17` 预热中、`20` 预售完成。
+- `p`：页码，从 1 开始；`limit`：每页数量，页面默认 12。
+- `status`：列表筛选值；前端选项为 `0` 全部、`10` 预售中、`17` 预热中、`20` 预售完成。
 - `sort`：空值默认排序、`new` 最新上线、`member` 支持人数最多、`amount` 预售金额最高。
-- 可选 `category_id`：观察到 `category_id=3` 返回旧“桌游”类结果；当前分类导航接口返回桌游 ID 为 `1`，但用 `category_id=1` 查询列表返回 0 条。分类 ID 映射尚未厘清，暂不依赖分类参数。
 
-分类导航候选接口（PC 前端静态包及公开请求均验证）：
+分类导航接口：
 
 ```http
 GET https://api.zhuoyou.com/gateway/v5_0_0/phylum/list
 ```
 
-返回 `data.phylum_list`，其中含分类 `id/name/show_type`。当前接口暴露项目发现能力，但项目列表覆盖范围、线下活动类别覆盖情况和分类参数映射仍需持续核对。新物集列表以众筹项目为主，不等同于完整活动日历。
+返回 `data.phylum_list`，包含分类 `id/name/show_type`。分类参数映射尚未厘清：观察到 `category_id=3` 返回旧“桌游”类结果，而导航返回的桌游 ID 为 `1`，查询 `category_id=1` 返回 0 条。因此发现流程暂不依赖分类过滤，而是在本地筛选。
 
-## 最小可行采集方式
+### 项目详情、票种和公告（样本 ID：4134）
 
-1. 定期以 `sort=new` 请求项目列表，逐页读取并按项目 ID 去重；初期抓全部类别，不依赖尚未厘清的分类筛选。
-2. 对新增 ID 调用详情、票种和更新公告接口。
-3. 用标题、描述、票种时间、城市/场馆、报名与主办方信息筛选线下活动，排除普通商品众筹。
-4. 保留原始项目 ID 与抓取时间；确认候选活动后再增量生成 `data/latest.json`、`data/status.json` 并接入周报。
+- `GET https://www.xinwuji.com/api/v1.10/fundingProject/4134` — PC 项目详情。
+- `GET https://www.xinwuji.com/api/v1/fundingProject/goods/4134` — 票种及活动时间、价格、库存、购买状态等。
+- `GET https://www.xinwuji.com/api/v1/fundingProjectUpdateRecords/4134?limit=20` — 官方更新公告。
+- `GET https://api.zhuoyou.com/gateway/shop/v1/project/detail?project_id=4134` — 手机端分享详情。
 
-## 运行探测
+样本项目为 **SDT杭州坠入奇点跑团节（10.24-10.25）**。新物集项目列表以众筹为主，并非完整活动日历；自动化结果需要人工复核，不能视为完整活动监测。
 
-Actions → **Probe Xinwuji API** → **Run workflow**，运行结束下载 Artifacts 中的 `xinwuji-network-results`，查看 `network_results.json`。脚本访问 PC 首页、列表页、详情页及分享页，并直接请求列表与分类接口。日志和响应样本只保留有限字段/样本，分享前仍应核对第三方返回信息。
+## 自动发现 MVP
 
-## 后续核验重点
+`discover.py` 执行以下流程：
 
-- 检查不同 `p` 是否返回不同 ID 集合，`total` 与实际分页是否一致。
-- 人工在 PC 列表页切换状态、排序和分类，确认请求参数与页面选项逐项对应。
-- 特别验证分类筛选：当前观察到导航分类 ID 与 `category_id` 查询结果不一致；在确认映射前采用全量列表本地过滤。
-- 用新发现 ID 验证详情/票种接口，并确认是否包含真实活动日期、城市、场馆或购票状态。
+1. 按 `sort=new` 扫描最新项目，默认最多 20 页（每页 12 条，可用 `XWJ_MAX_PAGES` 调整）。
+2. 按活动关键词初筛，排除若干明显商品类标题。
+3. 对候选项目读取详情、票种和最近 20 条更新公告。
+4. 按项目 ID 合并去重，输出 `data/latest.json`；运行状态写入 `data/status.json`。
+
+关键词筛选是保守 MVP，可能漏掉标题不含活动线索的项目，也可能保留误命中的商品众筹。当前保存的是累计发现的候选项目，不代表每一项已被人工确认。
+
+GitHub Actions 工作流 **Discover Xinwuji Events** 每天 03:20 UTC（香港时间 11:20）运行，也可手动触发并调整扫描页数。成功后会把变化提交到仓库，同时上传 `xinwuji-event-data` artifact。首次启用后应在 Actions 页面观察首次运行结果，并根据漏报/误报调整关键词。
+
+## 网络探测
+
+手动运行 Actions → **Probe Xinwuji API** → **Run workflow**，下载 `xinwuji-network-results` artifact 查看首页、列表页、详情页以及列表/分类接口响应。探测脚本只保留有限字段和小型响应样本。
+
+## 后续核验
+
+- 核对不同页是否返回不同 ID 集合，以及 `data.total` 和分页边界是否一致。
+- 对照列表页的状态、排序和分类操作检查对应请求参数。
+- 抽查自动筛中的活动与商品，持续调整关键词及排除规则。
+- 对候选项目确认真实日期、城市/场馆、票种和购买状态，再接入江浙沪活动周报。
+
+## 最初探测记录
+
+首次 Playwright 探测运行：[2026-10-15 Actions run 38677604552](https://github.com/Drvo903/xinwuji-event-bridge/actions/runs/38677604552)。当时从手机与 PC 项目详情页采集到 8 个 XHR/fetch 响应。
