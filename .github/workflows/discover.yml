@@ -22,7 +22,7 @@ jobs:
           python-version: "3.11"
       - name: Discover and enrich event-like projects
         env:
-          XWJ_MAX_PAGES: ${{ inputs.max_pages || '20' }}
+          XWJ_MAX_PAGES: ${{ github.event.inputs.max_pages || '20' }}
         run: python discover.py
       - name: Commit updated event data
         run: |
