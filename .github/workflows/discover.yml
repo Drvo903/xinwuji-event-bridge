@@ -1,0 +1,45 @@
+name: Discover Xinwuji Events
+on:
+  schedule:
+    - cron: "20 3 * * *"
+  workflow_dispatch:
+    inputs:
+      max_pages:
+        description: "Maximum newest-project pages to scan (12 projects per page)"
+        required: false
+        default: "20"
+        type: string
+permissions:
+  contents: write
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Discover and enrich event-like projects
+        env:
+          XWJ_MAX_PAGES: ${{ inputs.max_pages || '20' }}
+        run: python discover.py
+      - name: Commit updated event data
+        run: |
+          if git diff --quiet -- data/latest.json data/status.json; then
+            echo "No generated data changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/latest.json data/status.json
+          git commit -m "Update discovered Xinwuji events"
+          git push
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xinwuji-event-data
+          path: |
+            data/latest.json
+            data/status.json
+          if-no-files-found: warn
