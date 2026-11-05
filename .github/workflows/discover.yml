@@ -5,24 +5,24 @@ on:
   workflow_dispatch:
     inputs:
       max_pages:
-        description: "Maximum newest-project pages to scan (12 projects per page)"
+        description: "Maximum newest-project pages to scan (12 projects per page; 200 covers current catalog)"
         required: false
-        default: "20"
+        default: "200"
         type: string
 permissions:
   contents: write
 jobs:
   discover:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Discover and enrich event-like projects
+      - name: Discover current and upcoming activities
         env:
-          XWJ_MAX_PAGES: ${{ github.event.inputs.max_pages || '20' }}
+          XWJ_MAX_PAGES: ${{ github.event.inputs.max_pages || '200' }}
         run: python discover.py
       - name: Commit updated event data
         run: |
