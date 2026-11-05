@@ -71,6 +71,13 @@ def extract_items(data):
     return [], None
 
 
+def pagination_complete(rows, scanned, total):
+    """Treat a zero/missing total as unknown, not as an empty catalogue."""
+    if len(rows) < PAGE_SIZE:
+        return True
+    return isinstance(total, int) and total > 0 and scanned >= total
+
+
 def flatten(value):
     if isinstance(value, dict):
         return " ".join(flatten(v) for k, v in value.items() if not any(
@@ -150,7 +157,8 @@ def main():
         except (json.JSONDecodeError, AttributeError):
             old_items = {}
 
-    scanned = pages_read = total = raw_candidates = ticket_candidates = 0
+    scanned = pages_read = raw_candidates = ticket_candidates = 0
+    total = None
     items_by_id = {}
     errors = []
     try:
@@ -158,7 +166,7 @@ def main():
             params = urlencode({"p": page_num, "limit": PAGE_SIZE, "status": 0, "sort": "new"})
             rows_data = api_data(f"{LIST_URL}?{params}")
             rows, response_total = extract_items(rows_data)
-            if total is None:
+            if response_total is not None and response_total > 0:
                 total = response_total
             pages_read += 1
             if not rows:
@@ -227,7 +235,7 @@ def main():
                 items_by_id[str(project_id)] = record
                 time.sleep(0.15)
 
-            if len(rows) < PAGE_SIZE or (total is not None and scanned >= total):
+            if pagination_complete(rows, scanned, total):
                 break
             time.sleep(0.1)
     except (HTTPError, URLError, TimeoutError, RuntimeError, json.JSONDecodeError) as exc:
@@ -257,7 +265,9 @@ def main():
     }
     status = {
         "updated_at": now,
-        "collector_status": "partial" if errors else "ok",
+        "collector_status": "partial" if errors or (
+            pages_read >= MAX_PAGES and total is not None and scanned < total
+        ) else "ok",
         "pages_read": pages_read,
         "projects_scanned": scanned,
         "raw_candidate_count": raw_candidates,
