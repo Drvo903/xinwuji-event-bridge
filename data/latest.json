@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-07T10:34:53.812223+00:00",
+  "updated_at": "2026-11-08T10:41:10.590283+00:00",
   "source": "https://www.xinwuji.com/api/v1/fundingProjects",
   "scan_window": {
     "pages": 180,
@@ -178,7 +178,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794047688
+        "now_time": 1794134466
       },
       "updates": {
         "data": [
@@ -374,7 +374,7 @@
       "date_status": "needs_date_review",
       "region_status": "target_region",
       "first_seen_at": "2026-11-05T11:18:31.986781+00:00",
-      "last_seen_at": "2026-11-07T10:34:49.776867+00:00"
+      "last_seen_at": "2026-11-08T10:41:07.098430+00:00"
     },
     {
       "id": 395,
@@ -844,7 +844,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794047660
+        "now_time": 1794134443
       },
       "updates": {
         "data": [
@@ -936,7 +936,7 @@
       "date_status": "needs_date_review",
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:18:06.012318+00:00",
-      "last_seen_at": "2026-11-07T10:34:21.792801+00:00"
+      "last_seen_at": "2026-11-08T10:40:44.496657+00:00"
     },
     {
       "id": 552,
@@ -1076,7 +1076,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794047646
+        "now_time": 1794134431
       },
       "updates": {
         "data": [
@@ -1116,7 +1116,7 @@
       "date_status": "needs_date_review",
       "region_status": "target_region",
       "first_seen_at": "2026-11-05T11:17:51.743001+00:00",
-      "last_seen_at": "2026-11-07T10:34:07.043619+00:00"
+      "last_seen_at": "2026-11-08T10:40:31.989546+00:00"
     },
     {
       "id": 2179,
@@ -2117,7 +2117,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794047532
+        "now_time": 1794134332
       },
       "updates": {
         "data": [
@@ -2599,7 +2599,7 @@
       "date_status": "needs_date_review",
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:15:57.598772+00:00",
-      "last_seen_at": "2026-11-07T10:32:13.865312+00:00"
+      "last_seen_at": "2026-11-08T10:38:53.592872+00:00"
     },
     {
       "id": 3133,
@@ -2877,7 +2877,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794047449
+        "now_time": 1794134264
       },
       "updates": {
         "data": [],
@@ -2890,7 +2890,7 @@
       "date_status": "needs_date_review",
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:14:40.102851+00:00",
-      "last_seen_at": "2026-11-07T10:30:50.777132+00:00"
+      "last_seen_at": "2026-11-08T10:37:45.687737+00:00"
     },
     {
       "id": 3134,
@@ -3300,7 +3300,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794047447
+        "now_time": 1794134262
       },
       "updates": {
         "data": [],
@@ -3313,7 +3313,7 @@
       "date_status": "needs_date_review",
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:14:37.666324+00:00",
-      "last_seen_at": "2026-11-07T10:30:48.201967+00:00"
+      "last_seen_at": "2026-11-08T10:37:43.566266+00:00"
     },
     {
       "id": 3160,
@@ -4731,7 +4731,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794047440
+        "now_time": 1794134256
       },
       "updates": {
         "data": [
@@ -5265,7 +5265,7 @@
       "date_status": "needs_date_review",
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:14:31.212401+00:00",
-      "last_seen_at": "2026-11-07T10:30:41.503831+00:00"
+      "last_seen_at": "2026-11-08T10:37:37.783933+00:00"
     },
     {
       "id": 3270,
@@ -5481,7 +5481,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794047426
+        "now_time": 1794134244
       },
       "updates": {
         "data": [],
@@ -5494,7 +5494,7 @@
       "date_status": "needs_date_review",
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:14:17.297482+00:00",
-      "last_seen_at": "2026-11-07T10:30:27.402717+00:00"
+      "last_seen_at": "2026-11-08T10:37:25.602944+00:00"
     },
     {
       "id": 4330,
@@ -5690,7 +5690,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794047269
+        "now_time": 1794134110
       },
       "updates": {
         "data": [],
@@ -5703,7 +5703,7 @@
       "date_status": "needs_date_review",
       "region_status": "target_region",
       "first_seen_at": "2026-11-05T11:11:40.133649+00:00",
-      "last_seen_at": "2026-11-07T10:27:50.533139+00:00"
+      "last_seen_at": "2026-11-08T10:35:11.300204+00:00"
     }
   ]
 }
