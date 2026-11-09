@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-11-08T10:41:10.590283+00:00",
+  "updated_at": "2026-11-09T11:57:25.186512+00:00",
   "collector_status": "partial",
   "pages_read": 180,
-  "projects_scanned": 2149,
+  "projects_scanned": 2152,
   "raw_candidate_count": 144,
   "ticket_candidate_count": 53,
   "retained_item_count": 9,
-  "list_total": 2149,
+  "list_total": 2152,
   "errors": [
     "detail 3058: Unexpected API response for https://www.xinwuji.com/api/v1.10/fundingProject/3058: {'cd': 2003, 'code': 2003, 'msg': '无法访问该项目'}"
   ]
