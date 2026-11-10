@@ -102,17 +102,65 @@ def likely_event(project):
     return True
 
 
-def date_candidates(goods):
+def date_candidates(goods, extra_text="", reference=TODAY, event_year=None):
+    """Extract dates from ticket fields and public project text.
+
+    Date-only ranges such as ``10.31-11.01`` inherit the project's launch year,
+    falling back to the current year. The caller separately marks these inferred
+    years as needing review.
+    """
     found = []
     rows = goods.get("data", []) if isinstance(goods, dict) else []
-    for row in rows if isinstance(rows, list) else []:
-        raw = str(row.get("activity_time") or "")
-        for y, m, d in re.findall(r"(20\d{2})[./年-](\d{1,2})[./月-](\d{1,2})", raw):
+    sources = [str(row.get("activity_time") or "") for row in rows if isinstance(row, dict)] if isinstance(rows, list) else []
+    if extra_text:
+        sources.append(extra_text)
+    base_year = event_year or reference.year
+    for raw in sources:
+        # Full dates: 2026-10-31, 2026年10月31日, 2026/10/31.
+        for y, m, d in re.findall(r"(20\d{2})\s*[./年-]\s*(\d{1,2})\s*[./月-]\s*(\d{1,2})\s*日?", raw):
             try:
                 found.append(date(int(y), int(m), int(d)))
             except ValueError:
                 pass
+        # Month/day ranges: 10.31-11.01, 10月31日—11月1日, 10/31至11/1.
+        range_pattern = r"(?<!\d)(\d{1,2})\s*[./月]\s*(\d{1,2})\s*日?\s*(?:至|到|—|–|－|~|～|-)\s*(?:(20\d{2})\s*[./年])?(\d{1,2})\s*[./月]\s*(\d{1,2})\s*日?"
+        range_spans = []
+        for match in re.finditer(range_pattern, raw):
+            range_spans.append(match.span())
+            m1, d1, y2, m2, d2 = match.groups()
+            y1 = int(y2) if y2 else base_year
+            year2 = int(y2) if y2 else (y1 + 1 if int(m2) < int(m1) else y1)
+            try:
+                found.extend((date(y1, int(m1), int(d1)), date(year2, int(m2), int(d2))))
+            except ValueError:
+                pass
+        # Standalone dates without years; ignore values already consumed as
+        # range endpoints only through set de-duplication.
+        for match in re.finditer(r"(?<!\d)(\d{1,2})\s*[./月]\s*(\d{1,2})\s*日", raw):
+            if any(start <= match.start() < end for start, end in range_spans):
+                continue
+            m, d = match.groups()
+            try:
+                found.append(date(base_year, int(m), int(d)))
+            except ValueError:
+                pass
     return sorted(set(found))
+
+
+def event_text(detail, updates):
+    """Public human-authored fields most likely to mention event dates."""
+    values = []
+    if isinstance(detail, dict):
+        for key in ("title", "describe", "detail_information", "start_time", "over_time"):
+            if detail.get(key):
+                values.append(flatten(detail[key]))
+    if isinstance(updates, dict):
+        values.append(flatten(updates))
+    return " ".join(values)
+
+
+def contains_explicit_year(value):
+    return bool(re.search(r"20\d{2}\s*[./年-]\s*\d{1,2}", str(value or "")))
 
 
 def activity_ticket_present(goods):
@@ -157,7 +205,7 @@ def main():
         except (json.JSONDecodeError, AttributeError):
             old_items = {}
 
-    scanned = pages_read = raw_candidates = ticket_candidates = 0
+    scanned = pages_read = raw_candidates = ticket_candidates = expired_candidates = 0
     total = None
     items_by_id = {}
     errors = []
@@ -204,29 +252,47 @@ def main():
                 if not ticketed:
                     continue
                 ticket_candidates += 1
-                activity_dates = date_candidates(goods)
+                try:
+                    updates = api_data(f"{UPDATE_URL.format(id=project_id)}?limit=20")
+                    record["updates"] = updates
+                except Exception as exc:
+                    errors.append(f"updates {project_id}: {str(exc)[:160]}")
+                    updates = {}
+
+                launch_year = None
+                created = str(project.get("created_at") or "")
+                year_match = re.search(r"20\d{2}", created)
+                if year_match:
+                    launch_year = int(year_match.group())
+                text_dates = event_text(detail, updates)
+                ticket_dates = date_candidates(goods, event_year=launch_year)
+                detail_dates = date_candidates({}, text_dates, event_year=launch_year)
+                activity_dates = sorted(set(ticket_dates + detail_dates))
                 if activity_dates and max(activity_dates) < TODAY:
+                    expired_candidates += 1
                     continue
 
-                combined = flatten([project, detail, goods])
+                combined = flatten([project, detail, goods, updates])
                 region = place_status(combined)
                 if region == "outside_target_region":
                     continue
 
-                try:
-                    updates = api_data(f"{UPDATE_URL.format(id=project_id)}?limit=20")
-                    record["updates"] = updates
-                    combined += " " + flatten(updates)
-                    # Recheck region after reading announcements, which often provide venue.
-                    region = place_status(combined)
-                    if region == "outside_target_region":
-                        continue
-                except Exception as exc:
-                    errors.append(f"updates {project_id}: {str(exc)[:160]}")
-
                 previous = old_items.get(str(project_id), {})
                 record["activity_dates"] = [d.isoformat() for d in activity_dates]
-                record["date_status"] = "confirmed" if activity_dates else "needs_date_review"
+                explicit_ticket_year = any(
+                    contains_explicit_year(row.get("activity_time"))
+                    for row in goods.get("data", []) if isinstance(row, dict)
+                ) if isinstance(goods.get("data"), list) else False
+                explicit_text_year = contains_explicit_year(text_dates)
+                explicit_year = explicit_ticket_year or explicit_text_year
+                record["date_status"] = (
+                    "confirmed" if activity_dates and explicit_year
+                    else "year_inferred" if activity_dates
+                    else "needs_date_review"
+                )
+                record["date_confidence"] = "explicit_year" if explicit_year else ("inferred_year" if activity_dates else "unknown")
+                record["event_status"] = "upcoming" if activity_dates else "date_unknown"
+                record["date_sources"] = (["ticket_activity_time"] if ticket_dates else []) + (["project_or_update_text"] if detail_dates else [])
                 record["region_status"] = region
                 record["first_seen_at"] = previous.get(
                     "first_seen_at", datetime.now(timezone.utc).isoformat()
@@ -272,6 +338,7 @@ def main():
         "projects_scanned": scanned,
         "raw_candidate_count": raw_candidates,
         "ticket_candidate_count": ticket_candidates,
+        "expired_candidate_count": expired_candidates,
         "retained_item_count": len(items),
         "list_total": total,
         "errors": errors[:30],
