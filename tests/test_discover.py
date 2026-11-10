@@ -1,7 +1,7 @@
 import unittest
 from datetime import date
 
-from discover import PAGE_SIZE, date_candidates, pagination_complete
+from discover import PAGE_SIZE, contains_explicit_year, date_candidates, event_text, pagination_complete
 
 
 class PaginationTests(unittest.TestCase):
@@ -41,6 +41,15 @@ class DateExtractionTests(unittest.TestCase):
             date_candidates({}, "12月31日-1月2日", reference=date(2026, 11, 10), event_year=2026),
             [date(2026, 12, 31), date(2027, 1, 2)],
         )
+
+    def test_unrelated_announcement_timestamp_is_not_event_date(self):
+        text = event_text({}, {"data": [{"created_at": "2026-11-10", "content": "活动将于11月14日举行"}]})
+        self.assertFalse(contains_explicit_year(text))
+        self.assertTrue(contains_explicit_year("活动时间：2026年11月14日"))
+
+    def test_announcement_timestamps_are_not_scanned_as_event_text(self):
+        text = event_text({}, {"data": [{"created_at": "2026-11-10T10:00:00", "content": "活动11月14日举行"}]})
+        self.assertEqual(date_candidates({}, text, reference=date(2026, 11, 10)), [date(2026, 11, 14)])
 
 
 if __name__ == "__main__":
