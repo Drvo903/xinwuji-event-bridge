@@ -155,12 +155,24 @@ def event_text(detail, updates):
             if detail.get(key):
                 values.append(flatten(detail[key]))
     if isinstance(updates, dict):
-        values.append(flatten(updates))
+        def announcement_text(value):
+            if isinstance(value, dict):
+                parts = []
+                for key, item in value.items():
+                    normalized = str(key).lower()
+                    if any(token in normalized for token in ("time", "date", "timestamp", "created", "updated", "_id", "status")):
+                        continue
+                    parts.append(announcement_text(item))
+                return " ".join(parts)
+            if isinstance(value, list):
+                return " ".join(announcement_text(item) for item in value)
+            return flatten(value)
+        values.append(announcement_text(updates))
     return " ".join(values)
 
 
 def contains_explicit_year(value):
-    return bool(re.search(r"20\d{2}\s*[./年-]\s*\d{1,2}", str(value or "")))
+    return bool(re.search(r"20\d{2}\s*[./年-]\s*\d{1,2}\s*[./月-]\s*\d{1,2}", str(value or "")))
 
 
 def activity_ticket_present(goods):
