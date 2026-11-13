@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-12T11:39:52.619823+00:00",
+  "updated_at": "2026-11-13T11:29:42.210233+00:00",
   "source": "https://www.xinwuji.com/api/v1/fundingProjects",
   "scan_window": {
     "pages": 181,
@@ -475,7 +475,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794483553
+        "now_time": 1794569335
       },
       "updates": {
         "data": [
@@ -570,7 +570,7 @@
       "date_sources": [],
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:18:06.012318+00:00",
-      "last_seen_at": "2026-11-12T11:39:14.919878+00:00"
+      "last_seen_at": "2026-11-13T11:28:57.265403+00:00"
     },
     {
       "id": 552,
@@ -710,7 +710,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794483534
+        "now_time": 1794569313
       },
       "updates": {
         "data": [
@@ -753,7 +753,7 @@
       "date_sources": [],
       "region_status": "target_region",
       "first_seen_at": "2026-11-05T11:17:51.743001+00:00",
-      "last_seen_at": "2026-11-12T11:38:55.191685+00:00"
+      "last_seen_at": "2026-11-13T11:28:34.578407+00:00"
     },
     {
       "id": 3133,
@@ -1031,7 +1031,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794483257
+        "now_time": 1794568901
       },
       "updates": {
         "data": [],
@@ -1047,7 +1047,7 @@
       "date_sources": [],
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:14:40.102851+00:00",
-      "last_seen_at": "2026-11-12T11:34:19.081843+00:00"
+      "last_seen_at": "2026-11-13T11:21:42.795410+00:00"
     },
     {
       "id": 3134,
@@ -1457,7 +1457,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794483254
+        "now_time": 1794568894
       },
       "updates": {
         "data": [],
@@ -1473,7 +1473,7 @@
       "date_sources": [],
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:14:37.666324+00:00",
-      "last_seen_at": "2026-11-12T11:34:15.736499+00:00"
+      "last_seen_at": "2026-11-13T11:21:37.023134+00:00"
     },
     {
       "id": 3160,
@@ -2891,7 +2891,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794483242
+        "now_time": 1794568878
       },
       "updates": {
         "data": [
@@ -3428,7 +3428,7 @@
       "date_sources": [],
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:14:31.212401+00:00",
-      "last_seen_at": "2026-11-12T11:34:04.570168+00:00"
+      "last_seen_at": "2026-11-13T11:21:20.816173+00:00"
     },
     {
       "id": 3270,
@@ -3644,7 +3644,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794483225
+        "now_time": 1794568851
       },
       "updates": {
         "data": [],
@@ -3660,7 +3660,7 @@
       "date_sources": [],
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:14:17.297482+00:00",
-      "last_seen_at": "2026-11-12T11:33:46.514310+00:00"
+      "last_seen_at": "2026-11-13T11:20:53.264740+00:00"
     },
     {
       "id": 4330,
@@ -3856,7 +3856,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1794482998
+        "now_time": 1794568526
       },
       "updates": {
         "data": [],
@@ -3872,7 +3872,7 @@
       "date_sources": [],
       "region_status": "target_region",
       "first_seen_at": "2026-11-05T11:11:40.133649+00:00",
-      "last_seen_at": "2026-11-12T11:29:59.538345+00:00"
+      "last_seen_at": "2026-11-13T11:15:28.346737+00:00"
     }
   ]
 }
