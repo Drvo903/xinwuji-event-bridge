@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-22T11:50:18.071672+00:00",
+  "updated_at": "2026-11-23T13:24:58.300561+00:00",
   "source": "https://www.xinwuji.com/api/v1/fundingProjects",
   "scan_window": {
     "pages": 182,
@@ -475,7 +475,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1795348178
+        "now_time": 1795440257
       },
       "updates": {
         "data": [
@@ -570,7 +570,7 @@
       "date_sources": [],
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:18:06.012318+00:00",
-      "last_seen_at": "2026-11-22T11:49:39.789706+00:00"
+      "last_seen_at": "2026-11-23T13:24:19.143493+00:00"
     },
     {
       "id": 552,
@@ -710,7 +710,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1795348159
+        "now_time": 1795440238
       },
       "updates": {
         "data": [
@@ -753,7 +753,7 @@
       "date_sources": [],
       "region_status": "target_region",
       "first_seen_at": "2026-11-05T11:17:51.743001+00:00",
-      "last_seen_at": "2026-11-22T11:49:20.820107+00:00"
+      "last_seen_at": "2026-11-23T13:23:59.668543+00:00"
     },
     {
       "id": 3133,
@@ -1031,7 +1031,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1795347896
+        "now_time": 1795439947
       },
       "updates": {
         "data": [],
@@ -1047,7 +1047,7 @@
       "date_sources": [],
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:14:40.102851+00:00",
-      "last_seen_at": "2026-11-22T11:44:57.901252+00:00"
+      "last_seen_at": "2026-11-23T13:19:09.290622+00:00"
     },
     {
       "id": 3134,
@@ -1457,7 +1457,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1795347893
+        "now_time": 1795439944
       },
       "updates": {
         "data": [],
@@ -1473,7 +1473,7 @@
       "date_sources": [],
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:14:37.666324+00:00",
-      "last_seen_at": "2026-11-22T11:44:54.422949+00:00"
+      "last_seen_at": "2026-11-23T13:19:05.428896+00:00"
     },
     {
       "id": 3160,
@@ -2891,7 +2891,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1795347882
+        "now_time": 1795439931
       },
       "updates": {
         "data": [
@@ -3428,7 +3428,7 @@
       "date_sources": [],
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:14:31.212401+00:00",
-      "last_seen_at": "2026-11-22T11:44:43.988499+00:00"
+      "last_seen_at": "2026-11-23T13:18:53.707867+00:00"
     },
     {
       "id": 3270,
@@ -3644,7 +3644,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1795347866
+        "now_time": 1795439914
       },
       "updates": {
         "data": [],
@@ -3660,7 +3660,7 @@
       "date_sources": [],
       "region_status": "unknown",
       "first_seen_at": "2026-11-05T11:14:17.297482+00:00",
-      "last_seen_at": "2026-11-22T11:44:27.863122+00:00"
+      "last_seen_at": "2026-11-23T13:18:35.624168+00:00"
     },
     {
       "id": 4330,
@@ -3697,9 +3697,9 @@
               "https://i.zhuoyou.com/upload/images/202609/w_450_h_280_s_29181_5fc47b26-1d66-4b7b-9322-0b70aa7fadeb.jpg"
             ],
             "stock_count_total": 120,
-            "stock_total": 0,
+            "stock_total": 2,
             "quota": 1,
-            "updated_at": "2026-11-11 22:00:34",
+            "updated_at": "2026-11-23 14:51:42",
             "market_price": "100.00",
             "delivery_time": "2026-10-31 00:00:00",
             "is_preferential": 0,
@@ -3747,9 +3747,9 @@
               "https://i.zhuoyou.com/upload/images/202609/w_1045_h_650_s_99270_82bf28e7-5123-41e7-bb4e-e0703cf5ad73.jpg"
             ],
             "stock_count_total": 120,
-            "stock_total": 72,
+            "stock_total": 73,
             "quota": 1,
-            "updated_at": "2026-11-11 22:00:31",
+            "updated_at": "2026-11-23 14:51:42",
             "market_price": "300.00",
             "delivery_time": "2026-10-31 00:00:00",
             "is_preferential": 0,
@@ -3856,7 +3856,7 @@
           "relay_members": []
         },
         "preferential_time": 86400,
-        "now_time": 1795347650
+        "now_time": 1795439674
       },
       "updates": {
         "data": [],
@@ -3872,7 +3872,7 @@
       "date_sources": [],
       "region_status": "target_region",
       "first_seen_at": "2026-11-05T11:11:40.133649+00:00",
-      "last_seen_at": "2026-11-22T11:40:51.737490+00:00"
+      "last_seen_at": "2026-11-23T13:14:36.082873+00:00"
     }
   ]
 }
